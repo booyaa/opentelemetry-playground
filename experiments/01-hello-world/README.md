@@ -4,9 +4,9 @@ In this experiment we're going set up an environment to run the OpenTelemetry Co
 
 Tip: if you're using VS Code you can highlight the code snippets and use the command "Run Selection/Line in Active Terminal" to execute the commands.
 
-Let's set up our test environment. We just need to install the tool "wget" to download the [collector](https://github.com/open-telemetry/opentelemetry-collector-releases/releases) package. Please refer to the the [Dockerfile](./Dockerfile) for the full details.
+Let's set up our test environment. We just need to install the tool "wget" to download the [collector](https://github.com/open-telemetry/opentelemetry-collector-releases/releases) package. Please refer to the the [Dockerfile][file_dockerfile] for the full details.
 
-We run the collector using the command `/usr/bin/otelcol --config config.yaml`. We'll discuss the [config.yaml](./config.yaml) file later on
+We run the collector using the command `/usr/bin/otelcol --config config.yaml`. We'll discuss the [config.yaml][file_config] file later on
 
 Let's build our test environment in Docker
 
@@ -34,7 +34,7 @@ We can see the internal telemetry is disabled and the collector is ready to proc
 
 Let's review the config file to understand what's been configured.
 
-For a working config, we need at least one receiver and one exporter. A useful component for both is the `nop`. This is short for "no operation". The `nop` receiver discards all data it receives and the `nop` exporter does nothing with the data it receives.
+For a working config, we need at least one receiver and one exporter. A useful component for both is the `nop`. This is short for "no operation". The [`nop` receiver][docs_nop_rxr] discards all data it receives and the [`nop` exporter][docs_nop_exp] does nothing with the data it receives.
 
 ```yaml
 receivers:
@@ -61,3 +61,9 @@ Finally we need a way to connect the receiver and exporter together. This is don
       receivers: [nop]
       exporters: [nop]
 ```
+
+<!-- linkies -->
+[file_dockerfile]: ./Dockerfile
+[file_config]: ./config.yaml
+[docs_nop_rxr]: https://github.com/open-telemetry/opentelemetry-collector/tree/main/receiver/nopreceiver
+[docs_nop_exp]: https://github.com/open-telemetry/opentelemetry-collector/tree/main/exporter/nopexporter
