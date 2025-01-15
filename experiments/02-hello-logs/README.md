@@ -15,12 +15,12 @@ We'll be using two terminals
 ```sh
 # terminal 1
 docker build --platform=linux/amd64 -t 02-logs-http ./webhook && \
-    docker run --platform=linux/amd64 --name=playground --network=host --rm -it -p 4040:4040 02-logs-http
+    docker run --platform=linux/amd64 --name=playground --rm -it 02-logs-http
 ```
 
 ```sh
 # terminal 2
-curl -4 http://localhost:4040/events -d "this is a random log entry number $RANDOM"
+docker exec -it playground wget -qO- http://localhost:4040/events --post-data "this is a random log entry number $RANDOM"
 ```
 
 We should see something similar in our console
