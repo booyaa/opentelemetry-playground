@@ -1,0 +1,15 @@
+receivers:
+  webhookevent/curl:
+    endpoint: "localhost:4040"
+exporters:
+  debug:
+    verbosity: detailed
+
+service:
+  telemetry:
+    metrics:
+      level: none
+  pipelines:
+    logs:
+      receivers: [webhookevent/curl]
+      exporters: [debug]
