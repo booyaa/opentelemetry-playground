@@ -15,18 +15,36 @@ We'll be using two terminals
 ```sh
 # terminal 1
 docker build --platform=linux/amd64 -t 02-logs-http ./webhook && \
-docker run --platform=linux/amd64 --name=playground --rm -it -p 4040:4040 02-logs-http
+    docker run --platform=linux/amd64 --name=playground --network=host --rm -it -p 4040:4040 02-logs-http
 ```
 
 ```sh
 # terminal 2
-docker exec -it playground curl http://localhost:4040/events -d "random log line $RANDOM"
+curl -4 http://localhost:4040/events -d "this is a random log entry number $RANDOM"
 ```
-```sh
-# delete this before publishing
 
-```sh
-# delete this before publishing
-curl -LO https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v0.117.0/otelcol-contrib_0.117.0_linux_amd64.deb
-curl -LO https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v0.117.0/otelcol_0.117.0_linux_amd64.deb
+We should see something similar in our console
+
+```log
+2025-01-15T17:09:31.677Z        info    Logs    {"kind": "exporter", "data_type": "logs", "name": "debug", "resource logs": 1, "log records": 1}
+2025-01-15T17:09:31.677Z        info    ResourceLog #0
+Resource SchemaURL:
+ScopeLogs #0
+ScopeLogs SchemaURL:
+InstrumentationScope otlp/webhookevent 0.117.0
+InstrumentationScope attributes:
+     -> source: Str(webhookevent/curl)
+     -> receiver: Str(webhookevent)
+LogRecord #0
+ObservedTimestamp: 2025-01-15 17:09:31.677284784 +0000 UTC
+Timestamp: 1970-01-01 00:00:00 +0000 UTC
+SeverityText:
+SeverityNumber: Unspecified(0)
+Body: Str(this is a random log entry number 19229)
+Trace ID:
+Span ID:
+Flags: 0
+        {"kind": "exporter", "data_type": "logs", "name": "debug"}
 ```
+
+There's a lot of text, by using the collector's internal logger our single log entry is transformed into a log record. We can see there are a lot more fields added. If you search for "Body:" you'll see our log entry. Something you may have noticed is that time stamp appears to be Unix epoch time (midnight 1970-01-01). We can fix this by adding a processor to the collector or embed the timestamp in the log entry before sending it to the collector. We'll look at processors in another future experiment.
