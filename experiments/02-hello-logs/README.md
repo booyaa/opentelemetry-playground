@@ -22,3 +22,11 @@ docker run --platform=linux/amd64 --name=playground --rm -it -p 4040:4040 02-log
 # terminal 2
 docker exec -it playground curl http://localhost:4040/events -d "random log line $RANDOM"
 ```
+```sh
+# delete this before publishing
+
+```sh
+# delete this before publishing
+curl -LO https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v0.117.0/otelcol-contrib_0.117.0_linux_amd64.deb
+curl -LO https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v0.117.0/otelcol_0.117.0_linux_amd64.deb
+```
