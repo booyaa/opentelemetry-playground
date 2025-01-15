@@ -4,7 +4,7 @@ In this experiment we're going set up an environment to run the OpenTelemetry Co
 
 Tip: if you're using VS Code you can highlight the code snippets and use the command "Run Selection/Line in Active Terminal" to execute the commands.
 
-Let's set up our test environment. We just need to install the tool "wget" to download the [collector](https://github.com/open-telemetry/opentelemetry-collector-releases/releases) package. Please refer to the the [Dockerfile][file_dockerfile] for the full details.
+Let's set up our test environment. We just need to install the tool "wget" to download the [collector][repo] package. Please refer to the the [Dockerfile][file_dockerfile] for the full details.
 
 We run the collector using the command `/usr/bin/otelcol --config config.yaml`. We'll discuss the [config.yaml][file_config] file later on
 
@@ -67,3 +67,4 @@ Finally we need a way to connect the receiver and exporter together. This is don
 [file_config]: ./config.yaml
 [docs_nop_rxr]: https://github.com/open-telemetry/opentelemetry-collector/tree/main/receiver/nopreceiver
 [docs_nop_exp]: https://github.com/open-telemetry/opentelemetry-collector/tree/main/exporter/nopexporter
+[repo]: https://github.com/open-telemetry/opentelemetry-collector-releases/releases
