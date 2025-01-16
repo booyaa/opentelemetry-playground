@@ -49,7 +49,48 @@ Wow that's a lot of text considering we just sent a single log line. By using th
 
 We can see there are a lot more fields added. If you search for "Body:" you'll see our log entry. Something you may have noticed is that time stamp appears to be Unix epoch time (midnight 1970-01-01). We can fix this by adding a processor to the collector or embed the timestamp in the log entry before sending it to the collector. We'll look at processors in a future experiment.
 
+## Ingesting log files
+
+The more common method of handling log files is to ingest them and this is the job of the [filelog receiver][docs_filelog_rxr].
+
+In terminal 1 start the environment `./filelog/start`
+
+In terminal 2 we'll enter the environment and create a log file
+
+```sh
+./filelog/shell
+# once in the container run
+echo "hello world $RANDOM" >> /root/learning.log
+```
+
+We should see something similar to the last experiment
+
+```log
+2025-01-16T09:04:06.722Z        info    fileconsumer/file.go:265        Started watching file       {"kind": "receiver", "name": "filelog", "data_type": "logs", "component": "fileconsumer", "path": "/root/learning.log"}
+2025-01-16T09:04:06.823Z        info    Logs    {"kind": "exporter", "data_type": "logs", "name": "debug", "resource logs": 1, "log records": 1}
+2025-01-16T09:04:06.825Z        info    ResourceLog #0
+Resource SchemaURL:
+ScopeLogs #0
+ScopeLogs SchemaURL:
+InstrumentationScope
+LogRecord #0
+ObservedTimestamp: 2025-01-16 09:04:06.726844434 +0000 UTC
+Timestamp: 1970-01-01 00:00:00 +0000 UTC
+SeverityText:
+SeverityNumber: Unspecified(0)
+Body: Str(hello world 21648)
+Attributes:
+     -> log.file.name: Str(learning.log)
+Trace ID:
+Span ID:
+Flags: 0
+        {"kind": "exporter", "data_type": "logs", "name": "debug"}
+```
+
+Our log line still appears in the "Body" field. In addition to this we can also see the log file name in the "Attributes" field.
+
 <!-- linkies -->
 [docs_webhook_rxr]: https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/webhookeventreceiver
+[docs_filelog_rxr]: https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/filelogreceiver/README.md
 [docs_debug_exp]: https://github.com/open-telemetry/opentelemetry-collector/blob/main/exporter/debugexporter/README.md
 [docs_debug_exp_logger]: https://github.com/open-telemetry/opentelemetry-collector/blob/main/exporter/debugexporter/README.md#using-the-collectors-internal-logger
