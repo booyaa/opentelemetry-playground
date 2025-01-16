@@ -3,7 +3,7 @@ receivers:
     include: [ "/root/*.log" ]
 exporters:
   debug:
-    verbosity: detailed
+    verbosity: basic
 
 service:
   telemetry:

@@ -14,7 +14,7 @@ Each sub-directory in this repository will contain a different experiment with t
 
 You will need a Linux or MacOS environment with the following tools installed:
 
-- [Bash][www_bash] (where possible I will try to make the scripts Z shell compatible)
+- Bourne Again Shell (BASH) (where possible I will try to make the scripts Z shell compatible)
 - [Rancher Desktop][www_rancher] or any other engine using the containerd container runtime.
 - [Helm][www_helm]
 - [kubectl][www_kubectl]
@@ -34,7 +34,6 @@ Notes
 <!-- linkies -->
 [exp_001]: ./experiments/01-hello-world/README.md
 [exp_002]: ./experiments/02-hello-logs/README.md
-[www_bash]: https://www.gnu.org/software/bash/
 [www_rancher]: https://rancherdesktop.io/
 [www_helm]: https://helm.sh/
 [www_kubectl]: https://kubernetes.io/docs/tasks/tools/install-kubectl/
