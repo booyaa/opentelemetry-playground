@@ -8,17 +8,7 @@ Let's set up our test environment. We just need to install the tool "wget" to do
 
 We run the collector using the command `/usr/bin/otelcol --config config.yaml`. We'll discuss the [config.yaml][file_config] file later on
 
-Let's build our test environment in Docker
-
-```sh
-docker build --platform=linux/amd64 -t 01-hello-world .
-```
-
-Now run it
-
-```sh
-docker run --platform=linux/amd64 --name=01-hello-world --rm -it 01-hello-world
-```
+Let's build and run our test environment in Docker: `./start`
 
 We should see something similar in our terminal
 
@@ -30,11 +20,13 @@ We should see something similar in our terminal
 2025-01-15T11:34:50.831Z        info    service@v0.117.0/service.go:253 Everything is ready. Begin running and processing data.
 ```
 
-We can see the internal telemetry is disabled and the collector is ready to process data. Incidentally we know we're using 2 CPU cores (this matches how many CPU cores are allocated to my VM running Docker engine).
+Our "Hello, World!" in this case is this log message "Everything is ready. Begin running and processing data.". Congratulations we've created a working OpenTelemetry Collector environment. Not a very useful one, but it's a good start. You can stop the collector by pressing `Ctrl+C`.
+
+We can see the internal telemetry is disabled and the collector is ready to process data.
 
 Let's review the config file to understand what's been configured.
 
-For a working config, we need at least one receiver and one exporter. A useful component for both is the `nop`. This is short for "no operation". The [`nop` receiver][docs_nop_rxr] discards all data it receives and the [`nop` exporter][docs_nop_exp] does nothing with the data it receives.
+For a working config, we need at least one receiver and one exporter. A useful component for both is the `nop`, this is short for "no operation". The [`nop` receiver][docs_nop_rxr] discards all data it receives and the [`nop` exporter][docs_nop_exp] does nothing with the data it receives.
 
 ```yaml
 receivers:
@@ -44,7 +36,13 @@ exporters:
   nop:
 ```
 
-If you recall the output from the collector logs we could see that telemetry set up was skipped. Out of the box, the collector will generate it's own telemetry and at a minimum it exposes this as a prometheus metrics endpoint. To simplify this experiment we turned this off by setting the metrics level to none.
+If you recall the output from the collector logs we could see that internal telemetry was skipped.
+
+```log
+2025-01-16T08:08:02.979Z        info    service@v0.117.0/service.go:207 Skipped telemetry setup.
+```
+
+The default for the collector generates own telemetry (specifically metrics, logs and traces are handled differently) as [Prometheus endpoint][docs_prometheus_endpoint]. To simplify this experiment we turned this off by setting the metrics level to none. We'll review this feature in a later experiment.
 
 ```yaml
 service:
@@ -63,8 +61,9 @@ Finally we need a way to connect the receiver and exporter together. This is don
 ```
 
 <!-- linkies -->
-[file_dockerfile]: ./Dockerfile
-[file_config]: ./config.yaml
-[docs_nop_rxr]: https://github.com/open-telemetry/opentelemetry-collector/tree/main/receiver/nopreceiver
 [docs_nop_exp]: https://github.com/open-telemetry/opentelemetry-collector/tree/main/exporter/nopexporter
+[docs_nop_rxr]: https://github.com/open-telemetry/opentelemetry-collector/tree/main/receiver/nopreceiver
+[docs_prometheus_endpoint]: https://opentelemetry.io/docs/collector/internal-telemetry/#configure-internal-metrics
+[file_config]: ./config.yaml
+[file_dockerfile]: ./Dockerfile
 [repo]: https://github.com/open-telemetry/opentelemetry-collector-releases/releases
