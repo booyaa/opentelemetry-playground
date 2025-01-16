@@ -1,0 +1,4 @@
+#!/bin/bash
+
+docker build --platform=linux/amd64 -t otel-playground:01-hello-world . && \
+docker run --platform=linux/amd64 --name=playground --rm -it otel-playground:01-hello-world
