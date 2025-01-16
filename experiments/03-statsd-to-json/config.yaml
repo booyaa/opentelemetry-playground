@@ -1,0 +1,14 @@
+receivers:
+  statsd:
+exporters:
+  file:
+    path: /var/log/statsd.log
+
+service:
+  telemetry:
+    metrics:
+      level: none
+  pipelines:
+    metrics:
+      receivers: [statsd]
+      exporters: [file]
