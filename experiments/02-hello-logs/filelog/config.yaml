@@ -1,0 +1,15 @@
+receivers:
+  filelog:
+    include: [ "/root/*.log" ]
+exporters:
+  debug:
+    verbosity: detailed
+
+service:
+  telemetry:
+    metrics:
+      level: none
+  pipelines:
+    logs:
+      receivers: [filelog]
+      exporters: [debug]
