@@ -17,7 +17,8 @@ In terminal 2 we'll enter the environment and send a log entry
 ```sh
 ./shell
 root@8e8954d75716:/#
-# ^-- once in container run the following
+# ^-- once in container
+# run the following --v
 wget -qO- http://localhost:4040/events --post-data "this is a random log entry number $RANDOM"
 ```
 
