@@ -1,0 +1,10 @@
+#!/bin/bash
+
+build_dir="."
+if [[ $0 != "./start" ]]; then
+    build_dir=$(dirname "$0")
+    # build_dir="webhook"
+fi
+
+docker build --platform=linux/amd64 -t otel-playground:03-statsd-to-json "$build_dir" && \
+    docker run --platform=linux/amd64 --name=playground --rm -it otel-playground:03-statsd-to-json
