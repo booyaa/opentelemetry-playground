@@ -2,7 +2,7 @@
 
 In this experiment we try to ingest logs two different ways through a webhook and through a file receiver.
 
-:warning: We're about to start using the contrib version of the collector. If you're familar with long term support Linux distros you can think of the "core" collector in a similar manner. For the newer and experimental features will land in the "contrib" collector.
+> :warning: We're about to start using the contrib version of the collector. If you're familar with Long Term Support (LTS) Linux distros you can think of the "core" collector in a similar manner. For the newer and experimental features will land in the "contrib" collector.
 
 ## Sending logs over HTTP
 
@@ -10,17 +10,15 @@ We'll set up our collector to have an incoming [webhook receiver][docs_webhook_r
 
 To avoid adding complexity (observability backend like Datadog) to the collector we'll be using the [debug exporter][docs_debug_exp] to see the logs appear in the collector's console.
 
-We'll be using two terminals
+We'll be using two terminals. In terminal 1 start the environment `./webhook/start`
+
+In terminal 2 we'll enter the environment and send a log entry
 
 ```sh
-# terminal 1
-docker build --platform=linux/amd64 -t 02-logs-http ./webhook && \
-    docker run --platform=linux/amd64 --name=playground --rm -it 02-logs-http
-```
-
-```sh
-# terminal 2
-docker exec -it playground wget -qO- http://localhost:4040/events --post-data "this is a random log entry number $RANDOM"
+./shell
+root@8e8954d75716:/#
+# ^-- once in container run the following
+wget -qO- http://localhost:4040/events --post-data "this is a random log entry number $RANDOM"
 ```
 
 We should see something similar in our console
@@ -47,7 +45,9 @@ Flags: 0
         {"kind": "exporter", "data_type": "logs", "name": "debug"}
 ```
 
-There's a lot of text, by using the collector's [internal logger][docs_debug_exp_logger] our single log entry is transformed into a log record. We can see there are a lot more fields added. If you search for "Body:" you'll see our log entry. Something you may have noticed is that time stamp appears to be Unix epoch time (midnight 1970-01-01). We can fix this by adding a processor to the collector or embed the timestamp in the log entry before sending it to the collector. We'll look at processors in another future experiment.
+Wow that's a lot of text considering we just sent a single log line. By using the collector's [internal logger][docs_debug_exp_logger] our single log entry is transformed into a log record.
+
+We can see there are a lot more fields added. If you search for "Body:" you'll see our log entry. Something you may have noticed is that time stamp appears to be Unix epoch time (midnight 1970-01-01). We can fix this by adding a processor to the collector or embed the timestamp in the log entry before sending it to the collector. We'll look at processors in a future experiment.
 
 <!-- linkies -->
 [docs_webhook_rxr]: https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/webhookeventreceiver
