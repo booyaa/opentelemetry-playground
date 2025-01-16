@@ -28,8 +28,9 @@ Notes
 
 ## Experiments
 
-- [02 - Hello logs][exp_002]
 - [01 - Hello world!][exp_001]
+- [02 - Hello logs][exp_002]
+
 <!-- linkies -->
 [exp_001]: ./experiments/01-hello-world/README.md
 [exp_002]: ./experiments/02-hello-logs/README.md
