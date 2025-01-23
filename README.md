@@ -30,10 +30,16 @@ Notes
 
 - [01 - Hello world!][exp_001]
 - [02 - Hello logs][exp_002]
+- [03 - StatsD to JSON][exp_003]
+  
+---
+
+Mark Sta Ana Copyright 2025
 
 <!-- linkies -->
 [exp_001]: ./experiments/01-hello-world/README.md
 [exp_002]: ./experiments/02-hello-logs/README.md
+[exp_003]: ./experiments/03-statsd-to-json/README.md
 [www_rancher]: https://rancherdesktop.io/
 [www_helm]: https://helm.sh/
 [www_kubectl]: https://kubernetes.io/docs/tasks/tools/install-kubectl/
