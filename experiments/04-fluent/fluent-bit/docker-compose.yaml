@@ -1,0 +1,14 @@
+services:
+  otel-collector:
+    image: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib:0.117.0
+    # container_name: otelcollector
+    volumes:
+      - ./collector-config.yaml:/etc/otelcol-contrib/config.yaml
+  fluent-bit:
+    image: fluent/fluent-bit
+    # container_name: fluentbit
+    volumes:
+      - ./fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf
+    depends_on:
+      - otel-collector
+

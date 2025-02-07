@@ -1,0 +1,13 @@
+#!/bin/bash
+
+SERVICE_NAME=fluentd
+echo -e "\e[32mStarting services...\e[0m" \
+&& docker compose up -d \
+&& echo -e "\e[32mSend signal to FLuentd to flush buffered logs...\e[0m" \
+&& sleep 3 \
+&& docker compose kill -s USR1 $SERVICE_NAME \
+&& sleep 5 \
+&& echo -e "\e[32mTailing logs...\e[0m" \
+&& docker compose logs fluentd | grep dummy \
+&& docker compose logs otel-collector \
+&& docker compose down --remove-orphans 2>&1 > /dev/null
