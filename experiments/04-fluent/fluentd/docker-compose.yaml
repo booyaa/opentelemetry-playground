@@ -1,0 +1,12 @@
+services:
+  otel-collector:
+    image: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib:0.117.0
+    volumes:
+      - ./collector-config.yaml:/etc/otelcol-contrib/config.yaml
+  fluentd:
+    image: fluent/fluentd:v1.18-debian-1
+    volumes:
+      - ./fluent.conf:/fluentd/etc/fluent.conf
+    depends_on:
+      - otel-collector
+

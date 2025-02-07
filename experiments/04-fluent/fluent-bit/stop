@@ -1,0 +1,8 @@
+#!/bin/bash
+
+working_dir=.
+if [[ $0 != "./start" ]]; then
+    working_dir=$(dirname "$0")
+fi
+docker compose --file "${working_dir}/docker-compose.yaml" down
+

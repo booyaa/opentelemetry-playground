@@ -1,0 +1,13 @@
+receivers:
+  fluentforward:
+    endpoint: 0.0.0.0:8006
+
+exporters:
+  debug:
+    verbosity: detailed
+
+service:
+  pipelines:
+    logs:
+      receivers: [fluentforward]
+      exporters: [debug]
