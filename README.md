@@ -31,7 +31,8 @@ Notes
 - [01 - Hello world!][exp_001]
 - [02 - Hello logs][exp_002]
 - [03 - StatsD to JSON][exp_003]
-  
+- [04 - Fluent Bit/Fluent D][exp_004]
+
 ---
 
 Mark Sta Ana Copyright 2025
@@ -40,6 +41,7 @@ Mark Sta Ana Copyright 2025
 [exp_001]: ./experiments/01-hello-world/README.md
 [exp_002]: ./experiments/02-hello-logs/README.md
 [exp_003]: ./experiments/03-statsd-to-json/README.md
+[exp_004]: ./experiments/04-fluent/README.md
 [www_rancher]: https://rancherdesktop.io/
 [www_helm]: https://helm.sh/
 [www_kubectl]: https://kubernetes.io/docs/tasks/tools/install-kubectl/
