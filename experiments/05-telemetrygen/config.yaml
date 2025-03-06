@@ -5,17 +5,39 @@ receivers:
         endpoint: 0.0.0.0:4317
 
 exporters:
-  debug:
-    verbosity: detailed
+  awss3/logs:
+    s3uploader:
+      region: ${env:AWS_REGION}
+      s3_bucket: ${env:OTEL_BUCKET}
+      s3_prefix: logs
+      disable_ssl: true
+      endpoint: ${env:AWS_ENDPOINT_URL}
+      s3_force_path_style: true
+  awss3/metrics:
+    s3uploader:
+      region: ${env:AWS_REGION}
+      s3_bucket: ${env:OTEL_BUCKET}
+      s3_prefix: metrics
+      disable_ssl: true
+      endpoint: ${env:AWS_ENDPOINT_URL}
+      s3_force_path_style: true
+  awss3/traces:
+    s3uploader:
+      region: ${env:AWS_REGION}
+      s3_bucket: ${env:OTEL_BUCKET}
+      s3_prefix: traces
+      disable_ssl: true
+      endpoint: ${env:AWS_ENDPOINT_URL}
+      s3_force_path_style: true
 
 service:
   pipelines:
     logs:
       receivers: [otlp]
-      exporters: [debug]
+      exporters: [awss3/logs]
     metrics:
       receivers: [otlp]
-      exporters: [debug]
+      exporters: [awss3/metrics]
     traces:
       receivers: [otlp]
-      exporters: [debug]
+      exporters: [awss3/traces]
