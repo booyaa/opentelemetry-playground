@@ -1,0 +1,56 @@
+services:
+  otel-collector:
+    image: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib:0.117.0
+    container_name: otelcollector
+    environment:
+      - AWS_ACCESS_KEY_ID=localstack_access_key
+      - AWS_SECRET_ACCESS_KEY=localstack_secret_key
+      - AWS_ENDPOINT_URL=http://localstack-main:4566
+      - AWS_REGION=eu-west-2
+      - OTEL_BUCKET=otel-collector
+    volumes:
+      - ./config.yaml:/etc/otelcol-contrib/config.yaml
+    depends_on:
+      localstack:
+        condition: service_healthy
+
+  telemetrygen:
+    image: ghcr.io/open-telemetry/opentelemetry-collector-contrib/telemetrygen:latest
+    container_name: telemetrygen
+    command: ["metrics", "--metrics", "1", "--otlp-endpoint", "otelcollector:4317", "--otlp-insecure", "--otlp-header", Content-Type="application/x-protobuf"]
+    # command: ["traces", "--traces", "1", "--otlp-endpoint", "otelcollector:4317", "--otlp-insecure", "--otlp-header", Content-Type="application/x-protobuf"]
+    # command: ["logs", "--logs", "3", "--otlp-endpoint", "otelcollector:4317", "--otlp-insecure", "--otlp-header", Content-Type="application/x-protobuf"]
+    # command: ["logs", "--duration", "1s", "--otlp-endpoint", "otelcollector:4317", "--otlp-insecure", "--otlp-header", Content-Type="application/x-protobuf"]
+    depends_on:
+      - otel-collector
+
+  localstack: # docs: https://docs.localstack.cloud/getting-started/installation/#docker-compose
+    container_name: "${LOCALSTACK_DOCKER_NAME:-localstack-main}"
+    image: localstack/localstack:4.1.1
+    ports:
+      - "127.0.0.1:4566:4566"            # LocalStack Gateway
+      - "127.0.0.1:4510-4559:4510-4559"  # external services port range
+    # LocalStack configuration: https://docs.localstack.cloud/references/configuration/
+    environment:
+      - DEBUG=${DEBUG:-0}
+      - LOCALSTACK_AUTH_TOKEN=${LOCALSTACK_AUTH_TOKEN:-noset}
+      - OTEL_BUCKET=otel-collector
+    volumes:
+      - "./init-aws.sh:/etc/localstack/init/ready.d/init-aws.sh"  # ready hook
+      - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
+  awscli:
+    image: amazon/aws-cli:2.24.18 # https://hub.docker.com/r/amazon/aws-cli/tags
+    container_name: awscli
+    depends_on:
+      localstack:
+        condition: service_healthy
+    environment:
+      - AWS_DEFAULT_REGION=eu-west-2
+      - AWS_ACCESS_KEY_ID=localstack_access_key
+      - AWS_ENDPOINT_URL=http://localstack-main:4566
+      - AWS_SECRET_ACCESS_KEY=localstack_secret_key
+      - OTEL_BUCKET=otel-collector
+    entrypoint: [ "sh", "-c", "sleep infinity" ]
+
