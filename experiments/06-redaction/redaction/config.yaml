@@ -1,0 +1,41 @@
+receivers:
+  otlp:
+    protocols:
+      http:
+        endpoint: 0.0.0.0:4318
+
+exporters:
+  debug:
+    verbosity: detailed
+
+processors:
+  redaction:
+    allow_all_keys: true # if this is false and no keys are listed in allowed_keys everything will be excluded
+    # allowed_keys: # any key not listed here will be removed example
+    #   - string.attribute
+    #   - another.string.attribute
+    #   - int.attribute
+    #   - double.attribute
+    #   - map.attribute
+    #   - array.attribute
+    blocked_values: # these will be masked
+      # - ".*" # this will block all values and convert to Str() (empty string) which is probably not what you wanted
+      - "some string" # becomes Str(****)
+      - "4[0-9]{12}(?:[0-9]{3})?" # visa card number
+      - "[0-9]{4}-[0-9]{2}-[0-9]{2}" # YYYY-MM-DD date format
+      - "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}" # email address
+    allowed_values:
+      - ".+@example.com" # will not mask metadata.email in logs-extra.json
+    summary: debug # adds debugging stats to attributes
+service:
+  pipelines:
+    logs:
+      receivers: [otlp]
+      processors: [redaction]
+      exporters: [debug]
+    metrics:
+      receivers: [otlp]
+      exporters: [debug]
+    traces:
+      receivers: [otlp]
+      exporters: [debug]

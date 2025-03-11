@@ -33,6 +33,7 @@ Notes
 - [03 - StatsD to JSON][exp_003]
 - [04 - Fluent Bit/Fluent D][exp_004]
 - [05 - Storing telemetry in blob storage][exp_005]
+- [06 - Redacting sensitive information][exp_006]
 
 ---
 
@@ -44,6 +45,7 @@ Mark Sta Ana Copyright 2025
 [exp_003]: ./experiments/03-statsd-to-json/README.md
 [exp_004]: ./experiments/04-fluent/README.md
 [exp_005]: ./experiments/05-blob-storage/README.md
+[exp_006]: ./experiments/06-redaction/README.md
 [www_rancher]: https://rancherdesktop.io/
 [www_helm]: https://helm.sh/
 [www_kubectl]: https://kubernetes.io/docs/tasks/tools/install-kubectl/

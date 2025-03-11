@@ -1,0 +1,9 @@
+#!/bin/bash
+
+processor_dir=$1
+if [[ ! -d $processor_dir ]]; then
+    echo "Processor $processor_dir not found"
+    exit 1
+fi
+
+PROCESSOR=$processor_dir docker compose up --remove-orphans

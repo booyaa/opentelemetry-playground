@@ -1,0 +1,71 @@
+{
+    "resourceLogs": [
+      {
+        "resource": {
+          "attributes": [
+            {
+              "key": "service.name",
+              "value": {
+                "stringValue": "my.service"
+              }
+            }
+          ]
+        },
+        "scopeLogs": [
+          {
+            "scope": {
+              "name": "my.library",
+              "version": "1.0.0",
+              "attributes": [
+                {
+                  "key": "my.scope.attribute",
+                  "value": {
+                    "stringValue": "some scope attribute"
+                  }
+                }
+              ]
+            },
+            "logRecords": [
+              {
+                "timeUnixNano": "1544712660300000000",
+                "observedTimeUnixNano": "1544712660300000000",
+                "severityNumber": 10,
+                "severityText": "Information",
+                "traceId": "5B8EFFF798038103D269B633813FC60C",
+                "spanId": "EEE19B7EC3C1B174",
+                "body": {
+                  "stringValue": "Extended log record example"
+                },
+                "attributes": [
+                  {
+                    "key": "metadata.visa",
+                    "value": {
+                      "stringValue": "4032038828727812"
+                    }
+                  },
+                  {
+                    "key": "metadata.dob",
+                    "value": {
+                      "stringValue": "2000-01-01"
+                    }
+                  },
+                  {
+                    "key": "metadata.email",
+                    "value": {
+                      "stringValue": "foo@example.com"
+                    }
+                  },
+                  {
+                    "key": "metadata.alt_email",
+                    "value": {
+                      "stringValue": "foo@example.org"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+payload="${1:-logs.json}"
+echo "Sending payload: $payload"
+docker compose exec shell ./payloads/payload-test.sh "$payload"
