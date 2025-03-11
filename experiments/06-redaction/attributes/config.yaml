@@ -1,0 +1,38 @@
+receivers:
+  otlp:
+    protocols:
+      http:
+        endpoint: 0.0.0.0:4318
+
+exporters:
+  debug:
+    verbosity: detailed
+
+processors:
+  attributes:
+    actions:
+      - key: string.attribute
+        value: [REDACTED]
+        action: update
+      - key: boolean.attribute
+        action: delete
+      - key: double.attribute
+        action: hash
+      - key: map.attribute # can't use hash on maps
+        value: {"some.map.key":"REDACTED"}
+        action: update
+      - key: array.attribute # can't use hash on arrays
+        value: ["many","REDACTED"]
+        action: update
+service:
+  pipelines:
+    logs:
+      receivers: [otlp]
+      processors: [attributes]
+      exporters: [debug]
+    metrics:
+      receivers: [otlp]
+      exporters: [debug]
+    traces:
+      receivers: [otlp]
+      exporters: [debug]
