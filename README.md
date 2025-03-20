@@ -34,7 +34,7 @@ Notes
 - [04 - Fluent Bit/Fluent D][exp_004]
 - [05 - Storing telemetry in blob storage][exp_005]
 - [06 - Redacting sensitive information][exp_006]
-
+- [07 - Enriching telemetry using lookups][exp_007]
 ---
 
 Mark Sta Ana Copyright 2025
@@ -46,6 +46,7 @@ Mark Sta Ana Copyright 2025
 [exp_004]: ./experiments/04-fluent/README.md
 [exp_005]: ./experiments/05-blob-storage/README.md
 [exp_006]: ./experiments/06-redaction/README.md
+[exp_007]: ./experiments/07-lookup/README.md
 [www_rancher]: https://rancherdesktop.io/
 [www_helm]: https://helm.sh/
 [www_kubectl]: https://kubernetes.io/docs/tasks/tools/install-kubectl/

@@ -1,0 +1,16 @@
+services:
+  otel-collector: # https://github.com/observIQ/bindplane-otel-collector/pkgs/container/observiq-otel-collector
+    image: ghcr.io/observiq/observiq-otel-collector:1.73.1-ubi8
+    container_name: otelcollector
+    volumes:
+      - ./config.yaml:/etc/otel/config.yaml
+      - ./assets/lookup.csv:/etc/otel/lookup.csv
+  shell:
+    image: curlimages/curl:8.12.1 # https://github.com/curl/curl-container/releases
+    container_name: shell
+    depends_on:
+      - otel-collector
+    volumes:
+      - ./assets:/home/curl_user/payloads
+    entrypoint: [ "sh", "-c", "sleep infinity" ]
+
