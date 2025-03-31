@@ -35,6 +35,8 @@ Notes
 - [05 - Storing telemetry in blob storage][exp_005]
 - [06 - Redacting sensitive information][exp_006]
 - [07 - Enriching telemetry using lookups][exp_007]
+- [08 - Building your own OpenTelemetry Collector][exp_008]
+
 ---
 
 Mark Sta Ana Copyright 2025
@@ -47,6 +49,7 @@ Mark Sta Ana Copyright 2025
 [exp_005]: ./experiments/05-blob-storage/README.md
 [exp_006]: ./experiments/06-redaction/README.md
 [exp_007]: ./experiments/07-lookup/README.md
+[exp_008]: ./experiments/08-ocb/README.md
 [www_rancher]: https://rancherdesktop.io/
 [www_helm]: https://helm.sh/
 [www_kubectl]: https://kubernetes.io/docs/tasks/tools/install-kubectl/

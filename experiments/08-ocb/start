@@ -1,0 +1,6 @@
+#!/bin/bash
+
+rm -rf output/*
+docker compose down --remove-orphans --rmi all --volumes && \
+    docker compose up ocb &&
+    docker compose up otel-collector
