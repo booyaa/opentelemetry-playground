@@ -32,35 +32,66 @@ The items to note are:
 ./start
 ```
 
-Let's review the ocb logs, we can see our volume mapped manifest was used. Also we can see the built binary's file path.
+Previously we used docker compose to build our collector, but since moving to a multi-stage build the logging output
+has changed. To see what is happening to the build process we need to the build command separately.
 
-```log
-ocb-1 | internal/command.go:99  OpenTelemetry Collector Builder {"version": "0.122.1"}
-ocb-1 | internal/command.go:104 Using config file       {"path": "/build/builder-config.yaml"}
-ocb-1 | builder/config.go:165   Using go        {"go-executable": "/usr/local/go/bin/go"}
-ocb-1 | builder/main.go:99      Sources created {"path": "/build"}
-ocb-1 | builder/main.go:201     Getting go modules
-ocb-1 | builder/main.go:110     Compiling
-ocb-1 | builder/main.go:140     Compiled        {"binary": "/build/otelcolcustom"}
+We can see our custom manifest was used. Also we can see the built binary's file path.
+
+```sh
+docker build --no-cache --progress=plain -t ocb-multi .
+# a lot of the output has been trimmed for brevity, we're only interested in what the builder is doing
+#11 [build 5/5] RUN CGO_ENABLED=0 builder --config=custom-builder-config.yaml
+#11 0.381 2025-04-01T13:55:15.602Z      INFO    internal/command.go:99  OpenTelemetry Collector Builder {"version": "v0.123.0"}
+#11 0.381 2025-04-01T13:55:15.602Z      INFO    internal/command.go:104 Using config file       {"path": "custom-builder-config.yaml"}
+#11 0.381 2025-04-01T13:55:15.603Z      INFO    builder/config.go:160   Using go        {"go-executable": "/usr/local/go/bin/go"}
+#11 0.382 2025-04-01T13:55:15.603Z      INFO    builder/main.go:99      Sources created {"path": "/build"}
+#11 87.31 2025-04-01T13:56:42.532Z      INFO    builder/main.go:201     Getting go modules
+#11 94.24 2025-04-01T13:56:49.461Z      INFO    builder/main.go:110     Compiling
+#11 171.0 2025-04-01T13:58:06.209Z      INFO    builder/main.go:140     Compiled        {"binary": "/build/otelcolcustom"}
+#11 DONE 171.9s
 ```
 
-We can see in the opentelemetry collector logs (edited for brevity) that the lookup processor is part of our build.
+We can see in the opentelemetry collector logs that the lookup processor is part of our build. Also
+we can see someone (me) has snuck in the Datadog [exporter][otel_datadog_exporter]. Warning: if this Dockerfile file
+fails to build for you on a non-Linux platform you maybe need to increase your VM's memory limit it can vary between
+8-10 GB depending on your container runtime. Alternatively comment out the Datadog exporter and try again.
 
 ```log
-otel-collector-1  | buildinfo:
-otel-collector-1  |     command: otelcolcustom
-otel-collector-1  |     description: OpenTelemetry Collector
-otel-collector-1  |     version: 0.122.1
-otel-collector-1  | receivers: []
-otel-collector-1  | processors:
-otel-collector-1  |     - name: lookup
-otel-collector-1  |       module: github.com/observiq/bindplane-otel-collector/processor/lookupprocessor v1.73.1
-otel-collector-1  |       stability:
-otel-collector-1  |         logs: Alpha
-otel-collector-1  |         metrics: Alpha
-otel-collector-1  |         traces: Alpha
+buildinfo:
+    command: otelcolcustom
+    description: OpenTelemetry Collector
+    version: 0.122.1
+receivers: []
+processors:
+    - name: lookup
+      module: github.com/observiq/bindplane-otel-collector/processor/lookupprocessor v1.73.1
+      stability:
+        logs: Alpha
+        metrics: Alpha
+        traces: Alpha
+exporters:
+    - name: datadog
+      module: github.com/open-telemetry/opentelemetry-collector-contrib/exporter/datadogexporter v0.123.0
+      stability:
+        logs: Beta
+        metrics: Beta
+        traces: Beta
+connectors: []
+extensions: []
+providers:
+    - scheme: https
+      module: go.opentelemetry.io/collector/confmap/provider/httpsprovider v1.29.0
+    - scheme: yaml
+      module: go.opentelemetry.io/collector/confmap/provider/yamlprovider v1.29.0
+    - scheme: env
+      module: go.opentelemetry.io/collector/confmap/provider/envprovider v1.29.0
+    - scheme: file
+      module: go.opentelemetry.io/collector/confmap/provider/fileprovider v1.29.0
+    - scheme: http
+      module: go.opentelemetry.io/collector/confmap/provider/httpprovider v1.29.0
 ```
 
 <!-- links -->
 [gh_ocb]: https://github.com/open-telemetry/opentelemetry-collector/tree/main/cmd/builder
 [gh_ocb_manifest]: https://github.com/open-telemetry/opentelemetry-collector-releases/blob/main/distributions/otelcol-contrib/manifest.yaml
+[otel_datadog_exporter]: https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/datadogexporter
