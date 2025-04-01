@@ -1,6 +1,4 @@
 #!/bin/bash
 
-rm -rf output/*
-docker compose down --remove-orphans --rmi all --volumes && \
-    docker compose up ocb &&
-    docker compose up otel-collector
+docker build --platform=linux/amd64 -t otel-playground:08-ocb . && \
+    docker run --platform=linux/amd64 --name=playground --rm -it otel-playground:08-ocb
