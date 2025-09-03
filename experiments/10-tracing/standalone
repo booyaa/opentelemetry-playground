@@ -1,0 +1,15 @@
+#!/bin/bash
+
+docker compose --file docker-compose-standalone.yml up --detach
+
+while ! curl -s http://localhost:4567 > /dev/null; do
+  sleep 1
+done
+
+echo "HTTP request sent to http://localhost:4567, getting logs..."
+docker compose logs | grep -v redis-1
+
+# shellcheck disable=SC2162
+read -p "Press enter to stop experiment"
+
+docker compose down
