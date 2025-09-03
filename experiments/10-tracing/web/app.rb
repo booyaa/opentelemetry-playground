@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'redis'
+require 'opentelemetry/exporter/otlp'
 require 'opentelemetry/sdk'
 require 'opentelemetry/instrumentation/all'
 
