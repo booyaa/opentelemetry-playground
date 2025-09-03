@@ -1,0 +1,16 @@
+services:
+  otel-collector: # https://github.com/open-telemetry/opentelemetry-collector/releases
+    image: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib:0.123.1
+    container_name: otelcollector
+    volumes:
+      - ./config.yaml:/etc/otelcol-contrib/config.yaml
+      - ./logs:/logs
+  # shell:
+  #   image: curlimages/curl:8.12.1 # https://github.com/curl/curl-container/releases
+  #   container_name: shell
+  #   depends_on:
+  #     - otel-collector
+  #   # volumes:
+  #   #   - ./payloads:/home/curl_user/payloads
+  #   entrypoint: [ "sh", "-c", "sleep infinity" ]
+

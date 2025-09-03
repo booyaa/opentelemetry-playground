@@ -1,0 +1,61 @@
+# if params exists send to secure
+# then route to scrubber/receiver
+# scrubber/receiver remove params, replace with allow_params
+# then route to thirdparty
+
+# receivers:
+#   filelog:
+#     include: [./logs/*-log.json]
+
+# exporters:
+#   debug:
+#     verbosity: detailed
+#   file/secure: # s3
+#     path: ./logs/secure.log
+#   file/thirdparty: # datadog
+#     path: ./logs/thirdparty.log
+
+# connectors:
+#   routing:
+#     table:
+#       - context: log
+#         condition: IsMap(attributes["params"])
+#         pipelines: [logs/thirdparty]
+
+# processors:
+#   attributes/remove:
+#     actions:
+#       - key: params
+#         action: delete
+
+# service:
+#   pipelines:
+#     logs/secure:
+#       receivers: [filelog]
+#       exporters: [debug, file/secure, routing]
+#     logs/thirdparty:
+#       receivers: [routing]
+#       processors: [attributes/remove]
+#       exporters: [file/thirdparty]
+
+# understanding why log is being split into lots of records
+receivers:
+  filelog: # https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/filelogreceiver
+    start_at: beginning
+    force_flush_period: 0ms
+    include: [./logs/payload-log.json]
+    # operators:
+    #   - type: json_parser
+    #     timestamp:
+    #       parse_from: attributes.time
+    #       layout: '%Y-%m-%d %H:%M:%S'
+
+exporters:
+  debug:
+    verbosity: detailed
+
+service:
+  pipelines:
+    logs:
+      receivers: [filelog]
+      exporters: [debug]
