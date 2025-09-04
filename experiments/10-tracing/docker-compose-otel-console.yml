@@ -1,0 +1,37 @@
+services:
+  web:
+    build: web
+    command: bundle exec rackup --host 0.0.0.0 --port 4567
+    ports:
+     - "4567:4567"
+    volumes:
+     - ./web:/code
+    links:
+     - redis
+    environment:
+     - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
+
+  redis:
+    image: redis
+
+  jaeger-all-in-one:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "16686:16686"
+      - "14268"
+      - "14250"
+
+  zipkin-all-in-one:
+    image: openzipkin/zipkin:latest
+    ports:
+      - "9411:9411"
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib
+    volumes:
+        - ./opentelemetry/trace-tools-collector-config.yaml:/etc/otelcol-contrib/config.yaml
+    ports:
+      - 4318:4318 # OTLP http receiver
+    depends_on:
+      - jaeger-all-in-one
+      - zipkin-all-in-one

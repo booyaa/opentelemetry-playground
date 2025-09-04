@@ -1,0 +1,22 @@
+services:
+  web:
+    build: web
+    command: bundle exec rackup --host 0.0.0.0 --port 4567
+    ports:
+     - "4567:4567"
+    volumes:
+     - ./web:/code
+    links:
+     - redis
+
+  redis:
+    image: redis
+
+  # even though this service is enabled, the app has no hooks (environment
+  # variables) configured
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib
+    volumes:
+        - ./opentelemetry/debug-collector-config.yaml:/etc/otelcol-contrib/config.yaml
+    ports:
+      - 4318:4318 # OTLP http receiver

@@ -1,0 +1,13 @@
+#!/bin/sh
+
+if [ ! -f .docker-compose-context.config ]; then
+    echo "⚠️ Couldn't find the last compose file used, you will need to manually clean up compose."
+    exit 1
+fi
+
+DOCKER_COMPOSE_FILE=$(cat .docker-compose-context.config)
+export DOCKER_COMPOSE_FILE
+docker compose --file "$DOCKER_COMPOSE_FILE" down --volumes --remove-orphans
+unset DOCKER_COMPOSE_FILE
+
+rm .docker-compose-context.config
