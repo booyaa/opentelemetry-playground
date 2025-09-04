@@ -2,16 +2,12 @@
 
 docker compose --file docker-compose-otel-console.yml up --detach
 
-while ! curl -s http://localhost:4567 > /dev/null; do
-  sleep 1
-done
+clear
 
-echo "HTTP request sent to http://localhost:4567, getting logs..."
-docker compose logs | grep -v redis-1
-echo "Should see nothing in any container logs..."
-echo "Sending test trace...should see trace in collector"
-docker compose exec web ./send-test-trace.sh
-docker compose logs | grep -v redis-1
+echo "💡 Click on http://0.0.0.0:4567/ to generate some transactions"
+echo "👀 Click on http://127.0.0.1:9411/zipkin to see how traces are visualised using zipkin"
+echo "👀 Click on http://127.0.0.1:16686/ to see how traces are visualised using jaeger"
+echo "Which do you prefer?"
 
 # shellcheck disable=SC2162
 read -p "Press enter to stop experiment"
