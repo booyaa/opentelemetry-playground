@@ -4,7 +4,6 @@ docker compose --file docker-compose-standalone.yml up --detach
 
 clear
 
-echo " "
 echo "🕸️ HTTP request sent to http://localhost:4567, getting logs..."
 
 while ! curl -s http://localhost:4567 > /dev/null; do
