@@ -2,12 +2,16 @@
 
 docker compose --file docker-compose-ruby-console.yml up --detach
 
+clear
+
+echo "🕸️ HTTP request sent to http://localhost:4567, getting logs..."
+
 while ! curl -s http://localhost:4567 > /dev/null; do
   sleep 1
 done
 
-echo "HTTP request sent to http://localhost:4567, getting logs..."
 docker compose logs | grep -v redis-1
+echo " "
 
 # shellcheck disable=SC2162
 read -p "Press enter to stop experiment"
