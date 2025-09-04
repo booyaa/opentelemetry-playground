@@ -1,3 +1,5 @@
 *.deb
 *dontcommitmebro*
 *output*
+.docker-compose-context.config
+.tool-versions
