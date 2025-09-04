@@ -9,7 +9,7 @@ services:
     links:
      - redis
     environment:
-     - OTEL_EXPORTER_OTLP_ENDPOINT="http://otel-collector:4318"
+     - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
 
   redis:
     image: redis
