@@ -1,0 +1,29 @@
+receivers:
+  prometheus:
+      config:
+        scrape_configs:
+          - job_name: 'otel-collector'
+            scrape_interval: 5s
+            static_configs:
+              - targets: ['0.0.0.0:8888']
+          - job_name: 'node-exporter'
+            scrape_interval: 5s
+            static_configs:
+              - targets: ['node-exporter:9100']
+exporters:
+  debug:
+    # verbosity: detailed # to aid debugging
+  otlp:
+    endpoint: http://otel-tui:4317
+    tls:
+      insecure: true
+
+processors:
+  batch:
+
+service:
+  pipelines:
+    metrics:
+      receivers: [prometheus]
+      processors: [batch]
+      exporters: [debug, otlp]

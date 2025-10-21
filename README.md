@@ -38,6 +38,7 @@ Notes
 - [08 - Building your own OpenTelemetry Collector][exp_008]
 - 09 - Routing logs to different exporters with different transformation (WIP)
 - [10 - Tracing][exp_010]
+- [11 - Metrics scraping][exp_011]
 
 ---
 
@@ -53,6 +54,7 @@ Mark Sta Ana Copyright 2025
 [exp_007]: ./experiments/07-lookup/README.md
 [exp_008]: ./experiments/08-ocb/README.md
 [exp_010]: ./experiments/10-tracing/README.md
+[exp_011]: ./experiments/11-metrics-scraping/README.md
 [www_rancher]: https://rancherdesktop.io/
 [www_helm]: https://helm.sh/
 [www_kubectl]: https://kubernetes.io/docs/tasks/tools/install-kubectl/
