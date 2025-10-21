@@ -1,0 +1,29 @@
+services:
+  node-exporter:
+    image: quay.io/prometheus/node-exporter:latest
+    container_name: node_exporter
+    command:
+      - '--path.rootfs=/host'
+    ports:
+      - 9100:9100
+    pid: host
+    restart: unless-stopped
+    volumes:
+      - '/:/host:ro,rslave'
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.138.0
+    volumes:
+        - ./opentelemetry/collector-config.yaml:/etc/otelcol-contrib/config.yaml
+    depends_on:
+      - node-exporter
+      - oteltui
+  shell:
+    image: curlimages/curl:8.12.1 # https://github.com/curl/curl-container/releases
+    depends_on:
+      - otel-collector
+    entrypoint: [ "sh", "-c", "sleep infinity" ]
+  oteltui:
+    image: ymtdzzz/otel-tui:latest
+    container_name: otel-tui
+    stdin_open: true
+    tty: true
