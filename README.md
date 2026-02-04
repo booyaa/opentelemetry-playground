@@ -39,6 +39,7 @@ Notes
 - 09 - Routing logs to different exporters with different transformation (WIP)
 - [10 - Tracing][exp_010]
 - [11 - Metrics scraping][exp_011] - scraping metrics from Prometheus endpoints
+- [12 - Being KIND][exp_012] - Using KIND to learn how the OpenTelemetry helm chart works
 
 ---
 
@@ -55,6 +56,7 @@ Mark Sta Ana Copyright 2025
 [exp_008]: ./experiments/08-ocb/README.md
 [exp_010]: ./experiments/10-tracing/README.md
 [exp_011]: ./experiments/11-metrics-scraping/README.md
+[exp_012]: ./experiments/12-being-kind/README.md
 [www_rancher]: https://rancherdesktop.io/
 [www_helm]: https://helm.sh/
 [www_kubectl]: https://kubernetes.io/docs/tasks/tools/install-kubectl/
