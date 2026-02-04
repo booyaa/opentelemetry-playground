@@ -38,7 +38,7 @@ Notes
 - [08 - Building your own OpenTelemetry Collector][exp_008]
 - 09 - Routing logs to different exporters with different transformation (WIP)
 - [10 - Tracing][exp_010]
-- [11 - Metrics scraping][exp_011]
+- [11 - Metrics scraping][exp_011] - scraping metrics from Prometheus endpoints
 
 ---
 
