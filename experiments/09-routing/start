@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# rm -rf logs/*
+# cat smol-log.json >> logs/payload-log.json
+# touch logs/secure.log
+docker compose up --remove-orphans

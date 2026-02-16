@@ -1,0 +1,7 @@
+{
+    "time": "2025-04-03 03:37:22",
+    "method": "GET",
+    "path": "/admin/user/xxx",
+    "message": "looking for user xxx",
+    "severity": "INFO"
+}
